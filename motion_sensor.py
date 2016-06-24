@@ -1,4 +1,7 @@
 import RPi.GPIO as GPIO
+import requests
+import datetime
+
 from time import sleep
 
 sensor = 21
@@ -16,13 +19,17 @@ try:
 
     if val == 1:
       GPIO.output(led, GPIO.HIGH)
+      print "MOTION"
+      time = datetime.datetime.today().strftime("%Y/%m/%d %H:%M:%S")
+      requests.post("http://maker.ifttt.com/trigger/human_detect/with/key/cSdQ_oKHTolntlARUFAKD8", json={"value1": "Event from Raspberry Pi", "value2":time})
 
     else:
       GPIO.output(led, GPIO.LOW)
 
     sleep(1)
 
-except KeyboardInterrupt:
-        pass
 
-GPIO.cleanup()
+except KeyboardInterrupt:
+  print "hogehogehogheogheohgoee"
+  GPIO.cleanup()
+  pass
